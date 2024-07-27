@@ -1,18 +1,45 @@
-//
-//  SpendingView.swift
-//  DonWorry
-//
-//  Created by Sungmin Ahn on 7/25/24.
-//
-
 import SwiftUI
 
 struct SpendingView: View {
+    @State private var entries: [SpendingEntry] = []
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            List(entries) { entry in
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Amount: \(entry.amount, specifier: "%.2f")")
+                            .font(.headline)
+                        Text("Store: \(entry.storeName)")
+                        Text("Category: \(entry.category)")
+                    }
+                    
+                    Spacer()
+                    
+                    // Receipt icon
+                    if entry.receiptPhoto != nil {
+                        Image(systemName: "receipt")
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+            .navigationBarTitle("Spending Entries")
+            .navigationBarItems(trailing: NavigationLink(destination: AddSpendingView()) {
+                Image(systemName: "plus")
+            })
+            .onAppear {
+                loadEntries()
+            }
+        }
+    }
+    
+    private func loadEntries() {
+        entries = FileManagerHelper.shared.loadEntries()
     }
 }
 
-#Preview {
-    SpendingView()
+struct SpendingView_Previews: PreviewProvider {
+    static var previews: some View {
+        SpendingView()
+    }
 }

@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct AddIncomeView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Add Income Entry Form")
+            .navigationBarTitle("Add Income")
+            .navigationBarItems(trailing: Button("Done") {
+                self.presentationMode.wrappedValue.dismiss()
+            })
     }
 }
 
